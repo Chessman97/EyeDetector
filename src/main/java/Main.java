@@ -1,11 +1,8 @@
 import org.opencv.core.*;
-import org.opencv.core.Point;
 import org.opencv.imgcodecs.Imgcodecs;
 import org.opencv.imgproc.Imgproc;
 import org.opencv.objdetect.CascadeClassifier;
-
-import javax.swing.*;
-import java.util.Comparator;
+import view.Window;
 
 public class Main {
 
@@ -14,7 +11,10 @@ public class Main {
     }
 
     public static void main(String[] args) {
-        Mat img = Imgcodecs.imread("C:\\Users\\Mikhail\\IdeaProjects\\openCV\\src\\main\\resources\\test.jpg");
+        Mat img = Imgcodecs.imread("C:\\Users\\Mikhail\\IdeaProjects\\openCV\\src\\main\\resources\\test2.jpg");
+        if (img.empty()) {
+            System.out.println("Не удалось найти изображение");
+        }
 
         CascadeClassifier face_detector = new CascadeClassifier();
         String path = "C:\\Users\\Mikhail\\IdeaProjects\\openCV\\src\\main\\resources\\haarcascades\\";
@@ -25,6 +25,7 @@ public class Main {
         }
 
         Imgproc.medianBlur(img, img, 3);
+        Imgproc.cvtColor(img, img, Imgproc.COLOR_BGR2GRAY);
 
         CascadeClassifier eye_detector = new CascadeClassifier();
         name = "haarcascade_eye.xml";
@@ -42,24 +43,15 @@ public class Main {
             eye_detector.detectMultiScale(face, eyes);
             for (Rect r2 : eyes.toList()) {
                 if (r2.y < (r.x + r.width) / 2) {
+                    Mat eye = face.submat(r2);
+                    Imgproc.threshold(eye, eye, 100, 255, Imgproc.THRESH_BINARY | Imgproc.THRESH_OTSU);
                     Imgproc.rectangle(face, new Point(r2.x, r2.y), new Point(r2.x + r2.width, r2.y + r2.height), new Scalar(1, 1, 1, 2), 2);
                 }
             }
             Imgproc.rectangle(img, new Point(r.x, r.y), new Point(r.x + r.width, r.y + r.height), new Scalar(1, 1, 1, 1), 2);
         }
 
-        if (img.empty()) {
-            System.out.println("Не удалось найти изображение");
-        }
-        JFrame frame = new JFrame("Simple GUI");
-        frame.setSize(800, 600);
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        ImageIcon imageIcon = new ImageIcon(SwingUtils.MatToBufferedImage(img));
-        JLabel label = new JLabel(imageIcon);
-        JScrollPane pane = new JScrollPane(label);
-
-        frame.setContentPane(pane);
-        frame.setLocationRelativeTo(null);
-        frame.setVisible(true);
+        Window window = new Window();
+        window.show(img);
     }
 }
