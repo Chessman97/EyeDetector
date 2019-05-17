@@ -31,18 +31,32 @@ public class Main {
             int yPoint = points[3];
 
 //            System.out.println(xPoint + "  " + xEye);
-            if (xPoint - xEye > 1) {
-                System.out.println("left");
-                for (int i = 0; i < img.rows(); i++) {
-                    for (int j = 0; j < img.cols() / 2; j++) {
-                        img.put(i, j, 0);
+            if (xPoint > xEye) {
+                if (yEye > yPoint) {
+                    for (int i = 0; i < img.rows() / 2; i++) {
+                        for (int j = 0; j < img.cols() / 2; j++) {
+                            img.put(i, j, 0);
+                        }
+                    }
+                } else {
+                    for (int i = img.rows() / 2; i < img.rows(); i++) {
+                        for (int j = 0; j < img.cols() / 2; j++) {
+                            img.put(i, j, 0);
+                        }
                     }
                 }
             } else {
-                System.out.println("right");
-                for (int i = 0; i < img.rows(); i++) {
-                    for (int j = img.cols() / 2; j < img.cols(); j++) {
-                        img.put(i, j, 0);
+                if (yEye > yPoint) {
+                    for (int i = 0; i < img.rows() / 2; i++) {
+                        for (int j = img.cols() / 2; j < img.cols(); j++) {
+                            img.put(i, j, 0);
+                        }
+                    }
+                } else {
+                    for (int i = img.rows() / 2; i < img.rows(); i++) {
+                        for (int j = img.cols() / 2; j < img.cols(); j++) {
+                            img.put(i, j, 0);
+                        }
                     }
                 }
             }
