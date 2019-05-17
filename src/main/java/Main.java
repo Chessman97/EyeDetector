@@ -2,7 +2,6 @@ import input.Camera;
 import model.Detector;
 import org.opencv.core.Core;
 import org.opencv.core.Mat;
-import org.opencv.imgcodecs.Imgcodecs;
 import org.opencv.imgproc.Imgproc;
 import view.Window;
 
@@ -10,7 +9,7 @@ public class Main {
 
     private static Window window = new Window();
     private static Detector detector = new Detector();
-    private static Camera camera = new Camera(0, 800, 600);
+    private static Camera camera = new Camera(1, 800, 600);
 
     static {
         System.loadLibrary(Core.NATIVE_LIBRARY_NAME);
