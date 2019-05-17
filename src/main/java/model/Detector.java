@@ -39,9 +39,9 @@ public class Detector {
             MatOfRect eyes = new MatOfRect();
             eye_detector.detectMultiScale(face, eyes);
             for (Rect r2 : eyes.toList()) {
-                if (r2.y < (r.x + r.width) / 2) {
+                if (r2.y < (r.height) / 2) {
                     Mat eye = face.submat(r2);
-                    Imgproc.threshold(eye, eye, 100, 255, Imgproc.THRESH_BINARY | Imgproc.THRESH_OTSU);
+//                    Imgproc.threshold(eye, eye, 100, 255, Imgproc.THRESH_BINARY | Imgproc.THRESH_OTSU);
                     Imgproc.rectangle(face, new Point(r2.x, r2.y), new Point(r2.x + r2.width, r2.y + r2.height), new Scalar(1, 1, 1, 2), 2);
                 }
             }

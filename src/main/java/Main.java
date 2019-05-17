@@ -10,7 +10,7 @@ public class Main {
 
     private static Window window = new Window();
     private static Detector detector = new Detector();
-    private static Camera camera = new Camera(0, 640, 480);
+    private static Camera camera = new Camera(0, 800, 600);
 
     static {
         System.loadLibrary(Core.NATIVE_LIBRARY_NAME);
