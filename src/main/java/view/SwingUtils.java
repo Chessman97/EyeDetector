@@ -12,7 +12,7 @@ class SwingUtils {
             return null;
         }
         if (m.depth() == CvType.CV_8U) {
-            System.out.println("Ничего не надо делать");
+            System.out.print("");
         } else if (m.depth() == CvType.CV_16U) {
             Mat m_16 = new Mat();
             m.convertTo(m_16, CvType.CV_16U, 255.0 / 65535);

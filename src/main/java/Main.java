@@ -21,7 +21,7 @@ public class Main {
             Mat img = new Mat();
             camera.read(img);
 
-            Imgproc.medianBlur(img, img, 3);
+            Imgproc.medianBlur(img, img, 5);
             Imgproc.cvtColor(img, img, Imgproc.COLOR_BGR2GRAY);
 
             detector.work(img);

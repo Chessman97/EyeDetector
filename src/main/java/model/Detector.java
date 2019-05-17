@@ -32,6 +32,8 @@ public class Detector {
     }
 
     public List<Mat> work(Mat img) {
+
+
         MatOfRect faces = new MatOfRect();
         face_detector.detectMultiScale(img, faces);
         for (Rect r : faces.toList()) {
@@ -41,6 +43,15 @@ public class Detector {
             for (Rect r2 : eyes.toList()) {
                 if (r2.y < (r.height) / 2) {
                     Mat eye = face.submat(r2);
+                    for (int i = 0; i < eye.rows(); i++) {
+                        for (int j = 0; j < eye.cols(); j++) {
+                            if (eye.get(i,j)[0] > 35) { // TODO
+                                eye.put(i, j, 255);
+                            } else {
+                                eye.put(i, j, 0);
+                            }
+                        }
+                    }
 //                    Imgproc.threshold(eye, eye, 100, 255, Imgproc.THRESH_BINARY | Imgproc.THRESH_OTSU);
                     Imgproc.rectangle(face, new Point(r2.x, r2.y), new Point(r2.x + r2.width, r2.y + r2.height), new Scalar(1, 1, 1, 2), 2);
                 }
