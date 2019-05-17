@@ -33,10 +33,18 @@ public class Main {
 //            System.out.println(xPoint + "  " + xEye);
             if (xPoint - xEye > 1) {
                 System.out.println("left");
-            } else if (xEye - xPoint > 1) {
-                System.out.println("right");
+                for (int i = 0; i < img.rows(); i++) {
+                    for (int j = 0; j < img.cols() / 2; j++) {
+                        img.put(i, j, 0);
+                    }
+                }
             } else {
-                System.out.println("GOVNO");
+                System.out.println("right");
+                for (int i = 0; i < img.rows(); i++) {
+                    for (int j = img.cols() / 2; j < img.cols(); j++) {
+                        img.put(i, j, 0);
+                    }
+                }
             }
 
             window.show(img);
