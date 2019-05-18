@@ -31,19 +31,19 @@ public class Window extends JFrame {
 
     public void setState(int numberState) {
         if (numberState == 1 || numberState == 3) {
-            setImage("/home/vladimir/IdeaProjects/EggsCatcher/src/main/resources/img/wolf1.png");
+            setImage("C:\\Users\\Mikhail\\IdeaProjects\\EggsCatcherPath2\\src\\main\\resources\\img\\wolf1.png");
             if (numberState == 1) {
-                setImage("/home/vladimir/IdeaProjects/EggsCatcher/src/main/resources/img/hand1.png");
+                setImage("C:\\Users\\Mikhail\\IdeaProjects\\EggsCatcherPath2\\src\\main\\resources\\img\\hand1.png");
             } else {
-                setImage("/home/vladimir/IdeaProjects/EggsCatcher/src/main/resources/img/hand3.png");
+                setImage("C:\\Users\\Mikhail\\IdeaProjects\\EggsCatcherPath2\\src\\main\\resources\\img\\hand3.png");
             }
         }
         if (numberState == 2 || numberState == 4) {
-            setImage("/home/vladimir/IdeaProjects/EggsCatcher/src/main/resources/img/wolf2.png");
+            setImage("C:\\Users\\Mikhail\\IdeaProjects\\EggsCatcherPath2\\src\\main\\resources\\img\\wolf2.png");
             if (numberState == 2) {
-                setImage("/home/vladimir/IdeaProjects/EggsCatcher/src/main/resources/img/hand2.png");
+                setImage("C:\\Users\\Mikhail\\IdeaProjects\\EggsCatcherPath2\\src\\main\\resources\\img\\hand2.png");
             } else {
-                setImage("/home/vladimir/IdeaProjects/EggsCatcher/src/main/resources/img/hand4.png");
+                setImage("C:\\Users\\Mikhail\\IdeaProjects\\EggsCatcherPath2\\src\\main\\resources\\img\\hand4.png");
             }
         }
     }

@@ -39,11 +39,8 @@ public class Main {
         VideoWriter writer = new VideoWriter("C:\\Users\\Mikhail\\IdeaProjects\\EggsCatcherPath2\\src\\main\\resources\\videos\\1.avi", VideoWriter.fourcc('M', 'J', 'P', 'G'), fps, new Size(640, 480), true);
         while (true) {
             Mat img = new Mat();
-            if(camera.read(img)){
-                System.out.println("Video");
-                writer.write(img);
-            }
-
+            camera.read(img);
+            writer.write(img);
             Imgproc.medianBlur(img, img, 5);
             Imgproc.cvtColor(img, img, Imgproc.COLOR_BGR2GRAY);
 
@@ -64,8 +61,6 @@ public class Main {
             int yFace = points[13];
             int heightPoint1 = points[14];
             int heightPoint2 = points[15];
-
-
 
             if (xEye1 < xEye2) {
                 xLeftEye = xEye1;
@@ -116,18 +111,23 @@ public class Main {
             // лево
             if (xMain - (xFace + xLeftEye + xMyPoint) > 0) {
                 if (yMain - (yFace + yLeftEye + yMyPoint) > -4) {
+                    //window.setState(3);
                     drawLeftBottom(img);
                 } else {
+                    //window.setState(1);
                     drawLeftTop(img);
                 }
             } else {
                 if (yMain - (yFace + yLeftEye + yMyPoint) > -4) {
+                    //window.setState(4);
                     drawRightBottom(img);
                 } else {
+                    //window.setState(2);
                     drawRightTop(img);
                 }
             }
-            window.show(img);
+
+           window.show(img);
         }
     }
 
