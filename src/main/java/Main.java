@@ -9,9 +9,8 @@ import view.Window;
 
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
-import java.io.BufferedReader;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
+import java.io.*;
+import java.util.Scanner;
 
 public class Main {
 
@@ -41,6 +40,16 @@ public class Main {
     }
 
     public static void main(String[] args) {
+        try {
+            BufferedReader bufferedReader = new BufferedReader(new FileReader("C:\\Users\\Mikhail\\IdeaProjects\\EggsCatcherPath2\\src\\main\\resources\\xy.txt"));
+            String s =bufferedReader.readLine();
+            Scanner sc = new Scanner(s);
+            xMyPoint = sc.nextInt();
+            yMyPoint = sc.nextInt();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
         Mat img = new Mat();
         int[] points;
         int xEye1;
@@ -126,6 +135,13 @@ public class Main {
                         start = true;
                     }
                     if (e.getKeyChar() == 'e') {
+                        try {
+                            BufferedWriter bufferedWriter = new BufferedWriter(new FileWriter("C:\\Users\\Mikhail\\IdeaProjects\\EggsCatcherPath2\\src\\main\\resources\\xy.txt"));
+                            bufferedWriter.write(xMyPoint + " " + yMyPoint + "\n");
+                            bufferedWriter.close();
+                        } catch (IOException e1) {
+                            e1.printStackTrace();
+                        }
                         System.exit(0);
                     }
                 }
