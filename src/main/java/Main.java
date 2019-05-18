@@ -1,10 +1,9 @@
 import input.Camera;
 import model.Detector;
-import org.opencv.core.Core;
-import org.opencv.core.Mat;
-import org.opencv.core.Point;
-import org.opencv.core.Scalar;
+import org.opencv.core.*;
 import org.opencv.imgproc.Imgproc;
+import org.opencv.videoio.VideoWriter;
+import org.opencv.videoio.Videoio;
 import view.Window;
 
 import java.awt.event.KeyAdapter;
@@ -14,9 +13,12 @@ public class Main {
 
     private static int swap = 0;
     private static int dopSwap = 0;
+    private static int fps = 13;
     private static Window window = new Window();
     private static Detector detector = new Detector();
     private static Camera camera = new Camera(1, 640, 480);
+
+
 
     private static int xLeftEye = 0;
     private static int xLeftPoint = 0;
@@ -33,9 +35,14 @@ public class Main {
     }
 
     public static void main(String[] args) {
+
+        VideoWriter writer = new VideoWriter("C:\\Users\\Mikhail\\IdeaProjects\\EggsCatcherPath2\\src\\main\\resources\\videos\\1.avi", VideoWriter.fourcc('M', 'J', 'P', 'G'), fps, new Size(640, 480), true);
         while (true) {
             Mat img = new Mat();
-            camera.read(img);
+            if(camera.read(img)){
+                System.out.println("Video");
+                writer.write(img);
+            }
 
             Imgproc.medianBlur(img, img, 5);
             Imgproc.cvtColor(img, img, Imgproc.COLOR_BGR2GRAY);
@@ -120,7 +127,6 @@ public class Main {
                     drawRightTop(img);
                 }
             }
-
             window.show(img);
         }
     }
