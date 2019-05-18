@@ -8,6 +8,7 @@ import java.awt.*;
 public class Window extends JFrame {
 
     private boolean egg1Visible = true;
+    private int eggsCount = 0;
 
     private ImageIcon imageIconWolf1 = new ImageIcon("C:\\Users\\Mikhail\\IdeaProjects\\EggsCatcherPath2\\src\\main\\resources\\img\\wolf1.png");
     private ImageIcon imageIconWolf2 = new ImageIcon("C:\\Users\\Mikhail\\IdeaProjects\\EggsCatcherPath2\\src\\main\\resources\\img\\wolf2.png");
@@ -22,8 +23,8 @@ public class Window extends JFrame {
     private int state;
     private boolean game;
 
-    private double xEgg = -60;
-    private double yEgg = -20;
+    private double xEgg = -69;
+    private double yEgg = -23;
 
     public Window() {
         setTitle("EggCatcher");
@@ -57,7 +58,7 @@ public class Window extends JFrame {
         if (game) {
             g2.setStroke(new BasicStroke(10.0f));  // толщина равна 10
             g2.drawLine(0, 100, 300, 200);
-            g2.drawLine(0, 350, 300, 520);
+            g2.drawLine(0, 350, 300, 450);
             g2.drawLine(1066, 270, 1390, 100);
             g2.drawLine(1066, 520, 1390, 350);
         }
@@ -84,9 +85,11 @@ public class Window extends JFrame {
             yEgg += 3;
         } else {
             yEgg += 9;
-            if (state == 1 && yEgg > 290) {
-                egg1Visible = false;
-                System.out.println("Вы поймали яйцо!");
+            if (state == 1 && yEgg > 290 || state == 3 && yEgg > 540) {
+                xEgg = -69;
+                yEgg = -23 + 250;
+                eggsCount++;
+                System.out.println("У вас " + eggsCount);
             }
         }
         if (egg1Visible) {

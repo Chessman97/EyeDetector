@@ -38,6 +38,7 @@ public class Main {
     private static int yLeftPoint = 0;
     private static int yidthLeftPoint = 0;
     private static int yMyPoint = 0;
+    private static boolean keyboardState;
 
     static {
         System.loadLibrary(Core.NATIVE_LIBRARY_NAME);
@@ -99,7 +100,7 @@ public class Main {
             if (xEye1 < xEye2) {
                 xLeftEye = xEye1;
                 yLeftEye = yEye1;
-                widthLeftEye =  widthEye1;
+                widthLeftEye = widthEye1;
                 xLeftPoint = xPoint1;
                 yLeftPoint = yPoint1;
                 heightLeftPoint = heightPoint1;
@@ -107,7 +108,7 @@ public class Main {
             } else {
                 xLeftEye = xEye2;
                 yLeftEye = yEye2;
-                widthLeftEye =  widthEye2;
+                widthLeftEye = widthEye2;
                 xLeftPoint = xPoint2;
                 yLeftPoint = yPoint2;
                 heightLeftPoint = heightPoint2;
@@ -118,10 +119,10 @@ public class Main {
             yMain = yFace + yLeftEye + yLeftPoint + heightLeftPoint / 2;
             Imgproc.line(img, new Point(0, yMain), new Point(640, yMain), new Scalar(255, 255, 255, 255), 2);
             Imgproc.line(img, new Point((double) img.width() / 2, 0), new Point((double) img.width() / 2, 600), new Scalar(255, 255, 255, 255), 1);
-            Imgproc.line(img, new Point(0, (double)img.height() / 2), new Point(640, (double) img.height() / 2), new Scalar(255, 255, 255, 255), 1);
+            Imgproc.line(img, new Point(0, (double) img.height() / 2), new Point(640, (double) img.height() / 2), new Scalar(255, 255, 255, 255), 1);
             Imgproc.line(img, new Point(xMain, 0), new Point(xMain, 600), new Scalar(255, 255, 255, 255), 2);
-            Imgproc.line(img, new Point(xFace + xLeftEye + procent*widthLeftEye, 0), new Point(xFace + xLeftEye + procent*widthLeftEye, 600), new Scalar(1, 1, 1, 255), 2);
-            Imgproc.line(img, new Point(0, yFace + yLeftEye + procent2*heightLeftEye), new Point(640, yFace + yLeftEye + procent2*heightLeftEye), new Scalar(1, 1, 1, 255), 2);
+            Imgproc.line(img, new Point(xFace + xLeftEye + procent * widthLeftEye, 0), new Point(xFace + xLeftEye + procent * widthLeftEye, 600), new Scalar(1, 1, 1, 255), 2);
+            Imgproc.line(img, new Point(0, yFace + yLeftEye + procent2 * heightLeftEye), new Point(640, yFace + yLeftEye + procent2 * heightLeftEye), new Scalar(1, 1, 1, 255), 2);
 
             window.addKeyListener(new KeyAdapter() {
                 @Override
@@ -140,6 +141,9 @@ public class Main {
                     }
                     procent = (double) xMyPoint / widthLeftEye;
                     procent2 = (double) yMyPoint / heightLeftEye;
+                    if (e.getKeyChar() == 'r') {
+                        keyboardState = false;
+                    }
                     if (e.getKeyChar() == 's') {
                         start = !start;
                     }
@@ -153,43 +157,64 @@ public class Main {
                         }
                         System.exit(0);
                     }
+
+                    if (e.getKeyChar() == '1') {
+                        window.setState(1);
+                        keyboardState = true;
+                    }
+                    if (e.getKeyChar() == '2') {
+                        window.setState(2);
+                        keyboardState = true;
+                    }
+                    if (e.getKeyChar() == '3') {
+                        window.setState(3);
+                        keyboardState = true;
+                    }
+                    if (e.getKeyChar() == '4') {
+                        window.setState(4);
+                        keyboardState = true;
+                    }
+                    if (start)
+                        window.repaint();
                 }
             });
 
             Core.flip(img, img, 1);
-
-            if (xMain - (xFace + xLeftEye + xMyPoint) > 0) {
-                if (yMain - (yFace + yLeftEye + yMyPoint) > -2) {
-                    if (start) {
-                        window.setState(3);
+            if (!keyboardState) {
+                if (xMain - (xFace + xLeftEye + xMyPoint) > 0) {
+                    if (yMain - (yFace + yLeftEye + yMyPoint) > -2) {
+                        if (start) {
+                            window.setState(3);
+                        } else {
+                            drawLeftBottom(img);
+                        }
                     } else {
-                        drawLeftBottom(img);
+                        if (start) {
+                            window.setState(1);
+                        } else {
+                            drawLeftTop(img);
+                        }
                     }
                 } else {
-                    if (start) {
-                        window.setState(1);
+                    if (yMain - (yFace + yLeftEye + yMyPoint) > -2) {
+                        if (start) {
+                            window.setState(4);
+                        } else {
+                            drawRightBottom(img);
+                        }
                     } else {
-                        drawLeftTop(img);
-                    }
-                }
-            } else {
-                if (yMain - (yFace + yLeftEye + yMyPoint) > -2) {
-                    if (start) {
-                        window.setState(4);
-                    } else {
-                        drawRightBottom(img);
-                    }
-                } else {
-                    if (start) {
-                        window.setState(2);
-                    } else {
-                        drawRightTop(img);
+                        if (start) {
+                            window.setState(2);
+                        } else {
+                            drawRightTop(img);
+                        }
                     }
                 }
             }
-            if (start)
+
+            if (start) {
                 window.repaint();
-            if (!start) {
+            } else {
                 window.show(img);
             }
         }
