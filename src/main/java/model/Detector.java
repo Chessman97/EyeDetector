@@ -89,7 +89,8 @@ public class Detector {
                     int contours_size = 0;
                     for (MatOfPoint contour : contours) {
                         Rect r3 = Imgproc.boundingRect(contour);
-                        if (r3.width > point_size && r3.y < r2.y + r2.height / 3) {
+                        Imgproc.line(eye, new Point(0, (double)r2.height / 4), new Point(600, (double)r2.height / 4), new Scalar(255, 255, 255, 255), 2);
+                        if (r3.width > point_size && r3.y > (double)r2.height / 4) {
                             if (xEye1 == 0) {
                                 xEye1 = r2.x;
                                 yEye1 = r2.y;
@@ -110,9 +111,9 @@ public class Detector {
 //                            Imgproc.line(eye, new Point(0, yEye1), new Point(600, yEye1), new Scalar(255, 255, 255, 255), 2);
 //                            Imgproc.line(eye, new Point(0, yPoint1), new Point(600, yPoint1), new Scalar(255, 255, 255, 255), 1);
                             contours_size++;
-//                            Imgproc.rectangle(eye, new Point(r3.x, r3.y), new Point(r3.x + r3.width - 1, r3.y + r3.height - 1), new Scalar(255, 255, 255, 255), 1);
-//                            Imgproc.line(eye, new Point(r3.x, r3.y), new Point(r3.x + r3.width - 1, r3.y + r3.height - 1), new Scalar(255, 255, 255, 255), 1);
-//                            Imgproc.line(eye, new Point(r3.x + r3.width - 1, r3.y), new Point(r3.x, r3.y + r3.height - 1), new Scalar(255, 255, 255, 255), 1);
+                            Imgproc.rectangle(eye, new Point(r3.x, r3.y), new Point(r3.x + r3.width - 1, r3.y + r3.height - 1), new Scalar(255, 255, 255, 255), 1);
+                            Imgproc.line(eye, new Point(r3.x, r3.y), new Point(r3.x + r3.width - 1, r3.y + r3.height - 1), new Scalar(255, 255, 255, 255), 1);
+                            Imgproc.line(eye, new Point(r3.x + r3.width - 1, r3.y), new Point(r3.x, r3.y + r3.height - 1), new Scalar(255, 255, 255, 255), 1);
                         }
                     }
 
