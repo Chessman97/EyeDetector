@@ -21,7 +21,12 @@ public class Main {
     private static int xLeftEye = 0;
     private static int xLeftPoint = 0;
     private static int widthLeftPoint = 0;
+    private static int heightLeftPoint = 0;
     private static int xMyPoint = 0;
+    private static int yLeftEye = 0;
+    private static int yLeftPoint = 0;
+    private static int yidthLeftPoint = 0;
+    private static int yMyPoint = 0;
 
     static {
         System.loadLibrary(Core.NATIVE_LIBRARY_NAME);
@@ -50,19 +55,30 @@ public class Main {
             int widthPoint2 = points[11];
             int xFace = points[12];
             int yFace = points[13];
+            int heightPoint1 = points[14];
+            int heightPoint2 = points[15];
+
 
 
             if (xEye1 < xEye2) {
                 xLeftEye = xEye1;
+                yLeftEye = yEye1;
                 xLeftPoint = xPoint1;
+                yLeftPoint = yPoint1;
+                heightLeftPoint = heightPoint1;
                 widthLeftPoint = widthPoint1;
             } else {
                 xLeftEye = xEye2;
+                yLeftEye = yEye2;
                 xLeftPoint = xPoint2;
+                yLeftPoint = yPoint2;
+                heightLeftPoint = heightPoint2;
                 widthLeftPoint = widthPoint2;
             }
 
             int xMain = xFace + xLeftEye + xLeftPoint + widthLeftPoint / 2;
+            int yMain = yFace + yLeftEye + yLeftPoint + heightLeftPoint / 2;
+            Imgproc.line(img, new Point(0, yMain), new Point(640, yMain), new Scalar(255, 255, 255, 255), 2);
             Imgproc.line(img, new Point((double) img.width() / 2, 0), new Point((double) img.width() / 2, 600), new Scalar(255, 255, 255, 255), 2);
             Imgproc.line(img, new Point(xMain, 0), new Point(xMain, 600), new Scalar(255, 255, 255, 255), 2);
             Imgproc.line(img, new Point(xFace + xLeftEye + xMyPoint, 0), new Point(xFace + xLeftEye + xMyPoint, 600), new Scalar(1, 1, 1, 255), 2);
@@ -83,7 +99,7 @@ public class Main {
 
             Core.flip(img, img, 1);
 
-            if (xMain > xFace + xLeftEye + xMyPoint) {
+            if (xMain - (xFace + xLeftEye + xMyPoint) > 0) {
                 if (swap < 0) {
                     drawRight(img);
                     swap = 0;
@@ -94,7 +110,7 @@ public class Main {
                         swap = 1;
                     }
                 }
-            } else if (xMain < xFace + xLeftEye + xMyPoint) {
+            } else if ((xFace + xLeftEye + xMyPoint) - xMain > 0) {
                 if (swap > 0) {
                     drawLeft(img);
                     swap = 0;
@@ -108,6 +124,7 @@ public class Main {
             }
 
             window.show(img);
+
         }
     }
 

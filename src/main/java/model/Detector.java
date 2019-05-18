@@ -47,6 +47,8 @@ public class Detector {
         int widthPoint2 = 0;
         int xFace = 0;
         int yFace = 0;
+        int heightPoint1 = 0;
+        int heightPoint2 = 0;
 
         MatOfRect faces = new MatOfRect();
         face_detector.detectMultiScale(img, faces);
@@ -98,6 +100,7 @@ public class Detector {
                                 xPoint1 = r3.x;
                                 yPoint1 = r3.y;
                                 widthPoint1 = r3.width;
+                                heightPoint1 = r3.height;
                             } else if (xEye2 == 0) {
                                 xEye2 = r2.x;
                                 yEye2 = r2.y;
@@ -105,6 +108,7 @@ public class Detector {
                                 xPoint2 = r3.x;
                                 yPoint2 = r3.y;
                                 widthPoint2 = r3.width;
+                                heightPoint2 = r3.height;
                             }
 //                            Imgproc.line(eye, new Point(xEye1, 0), new Point(xEye1, 600), new Scalar(255, 255, 255, 255), 2);
 //                            Imgproc.line(eye, new Point(xPoint1, 0), new Point(xPoint1, 600), new Scalar(255, 255, 255, 255), 1);
@@ -128,6 +132,6 @@ public class Detector {
 //            Imgproc.line(img, new Point(r.x, r.y), new Point(r.x + r.width, r.y + r.height), new Scalar(1, 1, 1, 1), 2);
 //            Imgproc.line(img, new Point(r.x + r.width, r.y), new Point(r.x, r.y + r.height), new Scalar(1, 1, 1, 1), 2);
         }
-        return new int[]{xEye1, yEye1, widthEye1, xPoint1, yPoint1, widthPoint1, xEye2, yEye2, widthEye2, xPoint2, yPoint2, widthPoint2, xFace, yFace};
+        return new int[]{xEye1, yEye1, widthEye1, xPoint1, yPoint1, widthPoint1, xEye2, yEye2, widthEye2, xPoint2, yPoint2, widthPoint2, xFace, yFace, heightPoint1, heightPoint2};
     }
 }
