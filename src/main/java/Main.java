@@ -7,11 +7,19 @@ import org.opencv.core.Scalar;
 import org.opencv.imgproc.Imgproc;
 import view.Window;
 
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
+
 public class Main {
 
     private static Window window = new Window();
     private static Detector detector = new Detector();
     private static Camera camera = new Camera(1, 640, 480);
+
+    private static int xLeftEye = 0;
+    private static int xLeftPoint = 0;
+    private static int widthLeftPoint = 0;
+    private static int xMyPoint = 0;
 
     static {
         System.loadLibrary(Core.NATIVE_LIBRARY_NAME);
@@ -26,44 +34,62 @@ public class Main {
             Imgproc.cvtColor(img, img, Imgproc.COLOR_BGR2GRAY);
 
             int[] points = detector.work(img);
+            int xEye1 = points[0];
+            int yEye1 = points[1];
+            int widthEye1 = points[2];
+            int xPoint1 = points[3];
+            int yPoint1 = points[4];
+            int widthPoint1 = points[5];
+            int xEye2 = points[6];
+            int yEye2 = points[7];
+            int widthEye2 = points[8];
+            int xPoint2 = points[9];
+            int yPoint2 = points[10];
+            int widthPoint2 = points[11];
+            int xFace = points[12];
+            int yFace = points[13];
 
-            int xEye = points[0];
-            int yEye = points[1];
-            int xPoint = points[2];
-            int yPoint = points[3];
 
-//            System.out.println(xPoint + "  " + xEye);
-            if (xPoint > xEye) {
-                if (yEye > yPoint) {
-                    for (int i = 0; i < img.rows() / 2; i++) {
-                        for (int j = 0; j < img.cols() / 2; j++) {
-                            img.put(i, j, 0);
-                        }
+            if (xEye1 < xEye2) {
+                xLeftEye = xEye1;
+                xLeftPoint = xPoint1;
+                widthLeftPoint = widthPoint1;
+            } else {
+                xLeftEye = xEye2;
+                xLeftPoint = xPoint2;
+                widthLeftPoint = widthPoint2;
+            }
+
+            int xMain = xFace + xLeftEye + xLeftPoint + widthLeftPoint / 2;
+            Imgproc.line(img, new Point((double) img.width() / 2, 0), new Point((double) img.width() / 2, 600), new Scalar(255, 255, 255, 255), 2);
+            Imgproc.line(img, new Point(xMain, 0), new Point(xMain, 600), new Scalar(255, 255, 255, 255), 2);
+            Imgproc.line(img, new Point(xFace + xLeftEye + xMyPoint, 0), new Point(xFace + xLeftEye + xMyPoint, 600), new Scalar(255, 255, 255, 255), 2);
+
+            window.addKeyListener(new KeyAdapter() {
+                @Override
+                public void keyTyped(KeyEvent e) {
+                    if (xMain > xFace + xLeftEye + xMyPoint) {
+                        xMyPoint += 1;
+                    } else if (xMain < xFace + xLeftEye + xMyPoint) {
+                        xMyPoint -= 1;
                     }
-                } else if (yEye < yPoint) {
-                    for (int i = img.rows() / 2; i < img.rows(); i++) {
-                        for (int j = 0; j < img.cols() / 2; j++) {
-                            img.put(i, j, 0);
-                        }
+                    System.out.println(xMyPoint);
+                }
+            });
+
+            if (xMain > xFace + xLeftEye + xMyPoint) {
+                for (int i = 0; i < img.rows(); i++) {
+                    for (int j = 0; j < img.cols() / 2; j++) {
+                        img.put(i, j, 0);
                     }
                 }
-            } else if (xPoint < xEye){
-                if (yEye > yPoint) {
-                    for (int i = 0; i < img.rows() / 2; i++) {
-                        for (int j = img.cols() / 2; j < img.cols(); j++) {
-                            img.put(i, j, 0);
-                        }
-                    }
-                } else if (yEye < yPoint) {
-                    for (int i = img.rows() / 2; i < img.rows(); i++) {
-                        for (int j = img.cols() / 2; j < img.cols(); j++) {
-                            img.put(i, j, 0);
-                        }
+            } else if (xMain < xFace + xLeftEye + xMyPoint) {
+                for (int i = 0; i < img.rows(); i++) {
+                    for (int j = img.cols() / 2; j < img.cols(); j++) {
+                        img.put(i, j, 0);
                     }
                 }
             }
-
-            Imgproc.line(img, new Point(img.width() / 2, 0), new Point(img.width() / 2, 600), new Scalar(255, 255, 255, 255), 2);
 
             window.show(img);
         }
