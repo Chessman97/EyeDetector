@@ -14,6 +14,8 @@ import java.util.Scanner;
 
 public class Main {
 
+    private static double procent = 0;
+    private static double procent2 = 0;
     private static boolean start = false;
 
     private static int xMain;
@@ -27,6 +29,8 @@ public class Main {
 
     private static int xLeftEye = 0;
     private static int xLeftPoint = 0;
+    private static int widthLeftEye = 0;
+    private static int heightLeftEye = 0;
     private static int widthLeftPoint = 0;
     private static int heightLeftPoint = 0;
     private static int xMyPoint = 0;
@@ -77,6 +81,7 @@ public class Main {
             xEye1 = points[0];
             yEye1 = points[1];
             widthEye1 = points[2];
+            heightLeftEye = points[2];
             xPoint1 = points[3];
             yPoint1 = points[4];
             widthPoint1 = points[5];
@@ -94,6 +99,7 @@ public class Main {
             if (xEye1 < xEye2) {
                 xLeftEye = xEye1;
                 yLeftEye = yEye1;
+                widthLeftEye =  widthEye1;
                 xLeftPoint = xPoint1;
                 yLeftPoint = yPoint1;
                 heightLeftPoint = heightPoint1;
@@ -101,6 +107,7 @@ public class Main {
             } else {
                 xLeftEye = xEye2;
                 yLeftEye = yEye2;
+                widthLeftEye =  widthEye2;
                 xLeftPoint = xPoint2;
                 yLeftPoint = yPoint2;
                 heightLeftPoint = heightPoint2;
@@ -113,8 +120,8 @@ public class Main {
             Imgproc.line(img, new Point((double) img.width() / 2, 0), new Point((double) img.width() / 2, 600), new Scalar(255, 255, 255, 255), 1);
             Imgproc.line(img, new Point(0, (double)img.height() / 2), new Point(640, (double) img.height() / 2), new Scalar(255, 255, 255, 255), 1);
             Imgproc.line(img, new Point(xMain, 0), new Point(xMain, 600), new Scalar(255, 255, 255, 255), 2);
-            Imgproc.line(img, new Point(xFace + xLeftEye + xMyPoint, 0), new Point(xFace + xLeftEye + xMyPoint, 600), new Scalar(1, 1, 1, 255), 2);
-            Imgproc.line(img, new Point(0, yFace + yLeftEye + yMyPoint), new Point(640, yFace + yLeftEye + yMyPoint), new Scalar(1, 1, 1, 255), 2);
+            Imgproc.line(img, new Point(xFace + xLeftEye + procent*widthLeftEye, 0), new Point(xFace + xLeftEye + procent*widthLeftEye, 600), new Scalar(1, 1, 1, 255), 2);
+            Imgproc.line(img, new Point(0, yFace + yLeftEye + procent2*heightLeftEye), new Point(640, yFace + yLeftEye + procent2*heightLeftEye), new Scalar(1, 1, 1, 255), 2);
 
             window.addKeyListener(new KeyAdapter() {
                 @Override
@@ -131,8 +138,10 @@ public class Main {
                             yMyPoint -= 1;
                         }
                     }
-                    if (e.getKeyChar() == 's' && !start) {
-                        start = true;
+                    procent = (double) xMyPoint / widthLeftEye;
+                    procent2 = (double) yMyPoint / heightLeftEye;
+                    if (e.getKeyChar() == 's') {
+                        start = !start;
                     }
                     if (e.getKeyChar() == 'e') {
                         try {
