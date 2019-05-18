@@ -8,6 +8,9 @@ import java.util.ArrayList;
 
 public class Detector {
 
+    private static int count = 0;
+    private int point_size = 10;
+
     static {
         System.loadLibrary(Core.NATIVE_LIBRARY_NAME);
     }
@@ -24,7 +27,6 @@ public class Detector {
         }
 
         name = "haarcascade_eye.xml";
-        System.out.println(path + name);
         if (!eye_detector.load(path + name)) {
             System.out.println("Не удалось загрузить классификатор " + name);
             System.exit(1);
@@ -48,11 +50,20 @@ public class Detector {
             MatOfRect eyes = new MatOfRect();
             eye_detector.detectMultiScale(face, eyes);
             for (Rect r2 : eyes.toList()) {
-                if (r2.y < (r.height) / 2 && r2.width > 60) { // TODO
+                if (r2.y < (r.height) / 2 && r2.width > 60) {
                     Mat eye = face.submat(r2);
+                    Imgproc.medianBlur(eye, eye, 5);
+                    int k = 0;
                     for (int i = 0; i < eye.rows(); i++) {
                         for (int j = 0; j < eye.cols(); j++) {
-                            if (eye.get(i,j)[0] > 70) { // TODO
+                            k += eye.get(i, j)[0];
+                        }
+                    }
+                    k /= eye.cols() * eye.rows();
+                    k *= 0.8;
+                    for (int i = 0; i < eye.rows(); i++) {
+                        for (int j = 0; j < eye.cols(); j++) {
+                            if (eye.get(i,j)[0] > k) {
                                 eye.put(i, j, 255);
                             } else {
                                 eye.put(i, j, 0);
@@ -66,28 +77,38 @@ public class Detector {
                     Imgproc.Canny(eye, eye, 80, 200);
                     ArrayList<MatOfPoint> contours = new ArrayList<>();
                     Imgproc.findContours(eye, contours, new Mat(), Imgproc.RETR_EXTERNAL, Imgproc.CHAIN_APPROX_SIMPLE);
+//                    System.out.println(contours.size() + " " + point_size);
+
+                    int contours_size = 0;
                     for (MatOfPoint contour : contours) {
                         Rect r3 = Imgproc.boundingRect(contour);
-                        if (r3.width > 10) { // TODO
+                        if (r3.width > point_size) {
                             if (xEye1 == 0) {
                                 xEye1 = r2.width / 2;
                                 yEye1 = r2.height / 2;
                                 xPoint1 = r3.x + r3.width / 2;
                                 yPoint1 = r3.y + r3.height / 2;
-//                                Imgproc.rectangle(eye, new Point(xEye, yEye), new Point(xEye + 1, yEye + 1), new Scalar(1, 1, 1, 1), 3);
                             } else if (xEye2 == 0) {
                                 xEye2 = r2.width / 2;
                                 yEye2 = r2.height / 2;
                                 xPoint2 = r3.x + r3.width / 2;
                                 yPoint2 = r3.y + r3.height / 2;
                             }
-//                            Imgproc.line(eye, new Point(xEye, 0), new Point(xEye, 600), new Scalar(255, 255, 255, 255), 1);
-//                            Imgproc.line(eye, new Point(xPoint, 0), new Point(xPoint, 600), new Scalar(255, 255, 255, 255), 1);
-
+                            Imgproc.line(eye, new Point(xEye1, 0), new Point(xEye1, 600), new Scalar(255, 255, 255, 255), 2);
+                            Imgproc.line(eye, new Point(xPoint1, 0), new Point(xPoint1, 600), new Scalar(255, 255, 255, 255), 1);
+                            Imgproc.line(eye, new Point(0, yEye1), new Point(600, yEye1), new Scalar(255, 255, 255, 255), 2);
+                            Imgproc.line(eye, new Point(0, yPoint1), new Point(600, yPoint1), new Scalar(255, 255, 255, 255), 1);
+                            contours_size++;
 //                            Imgproc.rectangle(eye, new Point(r3.x, r3.y), new Point(r3.x + r3.width - 1, r3.y + r3.height - 1), new Scalar(255, 255, 255, 255), 1);
 //                            Imgproc.line(eye, new Point(r3.x, r3.y), new Point(r3.x + r3.width - 1, r3.y + r3.height - 1), new Scalar(255, 255, 255, 255), 1);
 //                            Imgproc.line(eye, new Point(r3.x + r3.width - 1, r3.y), new Point(r3.x, r3.y + r3.height - 1), new Scalar(255, 255, 255, 255), 1);
                         }
+                    }
+
+                    if (contours_size > 1) {
+                        point_size += 1;
+                    } else if (contours_size < 1) {
+                        point_size -= 1;
                     }
                 }
             }

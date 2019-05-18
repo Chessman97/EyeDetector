@@ -2,6 +2,8 @@ import input.Camera;
 import model.Detector;
 import org.opencv.core.Core;
 import org.opencv.core.Mat;
+import org.opencv.core.Point;
+import org.opencv.core.Scalar;
 import org.opencv.imgproc.Imgproc;
 import view.Window;
 
@@ -38,21 +40,21 @@ public class Main {
                             img.put(i, j, 0);
                         }
                     }
-                } else {
+                } else if (yEye < yPoint) {
                     for (int i = img.rows() / 2; i < img.rows(); i++) {
                         for (int j = 0; j < img.cols() / 2; j++) {
                             img.put(i, j, 0);
                         }
                     }
                 }
-            } else {
+            } else if (xPoint < xEye){
                 if (yEye > yPoint) {
                     for (int i = 0; i < img.rows() / 2; i++) {
                         for (int j = img.cols() / 2; j < img.cols(); j++) {
                             img.put(i, j, 0);
                         }
                     }
-                } else {
+                } else if (yEye < yPoint) {
                     for (int i = img.rows() / 2; i < img.rows(); i++) {
                         for (int j = img.cols() / 2; j < img.cols(); j++) {
                             img.put(i, j, 0);
@@ -60,6 +62,8 @@ public class Main {
                     }
                 }
             }
+
+            Imgproc.line(img, new Point(img.width() / 2, 0), new Point(img.width() / 2, 600), new Scalar(255, 255, 255, 255), 2);
 
             window.show(img);
         }
