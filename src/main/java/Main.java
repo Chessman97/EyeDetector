@@ -187,6 +187,8 @@ public class Main {
                     }
                 }
             }
+            if (start)
+                window.repaint();
             if (!start) {
                 window.show(img);
             }

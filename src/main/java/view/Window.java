@@ -17,6 +17,11 @@ public class Window extends JFrame {
     private ImageIcon hand2 = new ImageIcon("C:\\Users\\Mikhail\\IdeaProjects\\EggsCatcherPath2\\src\\main\\resources\\img\\hand2.png");
     private ImageIcon hand3 = new ImageIcon("C:\\Users\\Mikhail\\IdeaProjects\\EggsCatcherPath2\\src\\main\\resources\\img\\hand3.png");
     private ImageIcon hand4 = new ImageIcon("C:\\Users\\Mikhail\\IdeaProjects\\EggsCatcherPath2\\src\\main\\resources\\img\\hand4.png");
+    private ImageIcon egg1 = new ImageIcon("C:\\Users\\Mikhail\\IdeaProjects\\EggsCatcherPath2\\src\\main\\resources\\img\\egg1.png");
+    private ImageIcon egg2 = new ImageIcon("C:\\Users\\Mikhail\\IdeaProjects\\EggsCatcherPath2\\src\\main\\resources\\img\\egg2.png");
+    private ImageIcon egg3 = new ImageIcon("C:\\Users\\Mikhail\\IdeaProjects\\EggsCatcherPath2\\src\\main\\resources\\img\\egg3.png");
+    private int state;
+    private boolean game;
 
     public Window() {
         setTitle("EggCatcher");
@@ -33,23 +38,8 @@ public class Window extends JFrame {
     }
 
     public void setState(int numberState) {
-        getGraphics().clearRect(0,0,1920, 1080);
-        if (numberState == 1 || numberState == 3) {
-            setWolf(imageIconWolf1);
-            if (numberState == 1) {
-                setImage(hand1, 1);
-            } else {
-                setImage(hand3, 3);
-            }
-        }
-        if (numberState == 2 || numberState == 4) {
-            setWolf(imageIconWolf2);
-            if (numberState == 2) {
-                setImage(hand2, 2);
-            } else {
-                setImage(hand4, 4);
-            }
-        }
+        state = numberState;
+        game = true;
     }
 
     private void setWolf(ImageIcon imageIcon) {
@@ -64,7 +54,7 @@ public class Window extends JFrame {
             y = 0;
         }
         if (n == 2) {
-            x = 1300 - 460;
+            x = 1366 - 770;
             y = 0;
         }
         if (n == 3) {
@@ -77,4 +67,22 @@ public class Window extends JFrame {
         }
         getGraphics().drawImage(imageIcon.getImage(), x, y,null);
     }
+
+    @Override
+    public void paint(Graphics g) {
+        super.paint(g);
+        Graphics2D g2 = (Graphics2D) g;
+        if (game) {
+            g2.setStroke(new BasicStroke(10.0f));  // толщина равна 10
+            g2.drawLine(0, 100, 300, 270);
+            g2.drawLine(0, 350, 300, 520);
+            g2.drawLine(1066, 270, 1390, 100);
+            g2.drawLine(1066, 520, 1390, 350);
+        }
+        if(state == 1 || state == 3)
+            setImage(imageIconWolf1, state);
+        if(state == 2 || state == 4)
+            setImage(imageIconWolf2, state);
+    }
+
 }
