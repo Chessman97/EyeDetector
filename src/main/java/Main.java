@@ -122,7 +122,7 @@ public class Main {
                             yMyPoint -= 1;
                         }
                     }
-                    if (e.getKeyChar() == 's' && start) {
+                    if (e.getKeyChar() == 's' && !start) {
                         start = true;
                     }
                     if (e.getKeyChar() == 'e') {
