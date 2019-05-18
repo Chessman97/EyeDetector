@@ -11,6 +11,13 @@ import java.io.IOException;
 
 public class Window extends JFrame {
 
+    private ImageIcon imageIconWolf1 = new ImageIcon("C:\\Users\\Mikhail\\IdeaProjects\\EggsCatcherPath2\\src\\main\\resources\\img\\wolf1.png");
+    private ImageIcon imageIconWolf2 = new ImageIcon("C:\\Users\\Mikhail\\IdeaProjects\\EggsCatcherPath2\\src\\main\\resources\\img\\wolf2.png");
+    private ImageIcon hand1 = new ImageIcon("C:\\Users\\Mikhail\\IdeaProjects\\EggsCatcherPath2\\src\\main\\resources\\img\\hand1.png");
+    private ImageIcon hand2 = new ImageIcon("C:\\Users\\Mikhail\\IdeaProjects\\EggsCatcherPath2\\src\\main\\resources\\img\\hand2.png");
+    private ImageIcon hand3 = new ImageIcon("C:\\Users\\Mikhail\\IdeaProjects\\EggsCatcherPath2\\src\\main\\resources\\img\\hand3.png");
+    private ImageIcon hand4 = new ImageIcon("C:\\Users\\Mikhail\\IdeaProjects\\EggsCatcherPath2\\src\\main\\resources\\img\\hand4.png");
+
     public Window() {
         setTitle("EggCatcher");
         setSize(800, 600);
@@ -22,40 +29,34 @@ public class Window extends JFrame {
 
     public void show(Mat img) {
         ImageIcon imageIcon = new ImageIcon(SwingUtils.MatToBufferedImage(img));
-        JLabel label = new JLabel(imageIcon);
-        label.setDisabledIcon(imageIcon);
-        JScrollPane pane = new JScrollPane(label);
-        setContentPane(pane);
-        setVisible(true);
+        getGraphics().drawImage(imageIcon.getImage(), 363, 150,null);
     }
 
     public void setState(int numberState) {
         getGraphics().clearRect(0,0,1920, 1080);
         if (numberState == 1 || numberState == 3) {
-            setImage("C:\\Users\\Mikhail\\IdeaProjects\\EggsCatcherPath2\\src\\main\\resources\\img\\wolf1.png");
+            setWolf(imageIconWolf1);
             if (numberState == 1) {
-                setImage("C:\\Users\\Mikhail\\IdeaProjects\\EggsCatcherPath2\\src\\main\\resources\\img\\hand1.png");
+                setImage(hand1, 1);
             } else {
-                setImage("C:\\Users\\Mikhail\\IdeaProjects\\EggsCatcherPath2\\src\\main\\resources\\img\\hand3.png");
+                setImage(hand3, 3);
             }
-            setWolf("/home/vladimir/IdeaProjects/EggsCatcher/src/main/resources/img/wolf1.png");
         }
         if (numberState == 2 || numberState == 4) {
-            setImage("C:\\Users\\Mikhail\\IdeaProjects\\EggsCatcherPath2\\src\\main\\resources\\img\\wolf2.png");
+            setWolf(imageIconWolf2);
             if (numberState == 2) {
-                setImage("C:\\Users\\Mikhail\\IdeaProjects\\EggsCatcherPath2\\src\\main\\resources\\img\\hand2.png");
+                setImage(hand2, 2);
             } else {
-                setImage("C:\\Users\\Mikhail\\IdeaProjects\\EggsCatcherPath2\\src\\main\\resources\\img\\hand4.png");
+                setImage(hand4, 4);
             }
-            setWolf("/home/vladimir/IdeaProjects/EggsCatcher/src/main/resources/img/wolf2.png");
         }
     }
 
-    private void setWolf(String path) {
-        getGraphics().drawImage(new ImageIcon(path).getImage(), 700, 0,null);
+    private void setWolf(ImageIcon imageIcon) {
+        getGraphics().drawImage(imageIcon.getImage(), 300, 0,null);
     }
 
-    private void setImage(String path, int n) {
+    private void setImage(ImageIcon imageIcon, int n) {
         int x = 0;
         int y = 0;
         if (n == 1) {
@@ -63,17 +64,17 @@ public class Window extends JFrame {
             y = 0;
         }
         if (n == 2) {
-            x = 1920 - 460;
+            x = 1300 - 460;
             y = 0;
         }
         if (n == 3) {
             x = 0;
-            y = 1080 - 330;
+            y = 700 - 330;
         }
         if (n == 4) {
-            x = 1920 - 460;
-            y = 1080 - 330;
+            x = 1300 - 460;
+            y = 700 - 330;
         }
-        getGraphics().drawImage(new ImageIcon(path).getImage(), x,y,null);
+        getGraphics().drawImage(imageIcon.getImage(), x, y,null);
     }
 }

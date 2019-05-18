@@ -1,24 +1,30 @@
 import input.Camera;
 import model.Detector;
-import org.opencv.core.*;
+import org.opencv.core.Core;
+import org.opencv.core.Mat;
+import org.opencv.core.Point;
+import org.opencv.core.Scalar;
 import org.opencv.imgproc.Imgproc;
-import org.opencv.videoio.VideoWriter;
-import org.opencv.videoio.Videoio;
 import view.Window;
 
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
+import java.io.BufferedReader;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
 
 public class Main {
 
-    private static int swap = 0;
-    private static int dopSwap = 0;
-    private static int fps = 13;
+    private static boolean start = false;
+
+    private static int xMain;
+    private static int yMain;
+    private static int xFace;
+    private static int yFace;
+
     private static Window window = new Window();
     private static Detector detector = new Detector();
     private static Camera camera = new Camera(1, 640, 480);
-
-
 
     private static int xLeftEye = 0;
     private static int xLeftPoint = 0;
@@ -35,32 +41,46 @@ public class Main {
     }
 
     public static void main(String[] args) {
+        Mat img = new Mat();
+        int[] points;
+        int xEye1;
+        int yEye1;
+        int widthEye1;
+        int xPoint1;
+        int yPoint1;
+        int widthPoint1;
+        int xEye2;
+        int yEye2;
+        int widthEye2;
+        int xPoint2;
+        int yPoint2;
+        int widthPoint2;
+        int heightPoint1;
+        int heightPoint2;
 
-        VideoWriter writer = new VideoWriter("C:\\Users\\Mikhail\\IdeaProjects\\EggsCatcherPath2\\src\\main\\resources\\videos\\1.avi", VideoWriter.fourcc('M', 'J', 'P', 'G'), fps, new Size(640, 480), true);
         while (true) {
-            Mat img = new Mat();
             camera.read(img);
-            writer.write(img);
+
             Imgproc.medianBlur(img, img, 5);
             Imgproc.cvtColor(img, img, Imgproc.COLOR_BGR2GRAY);
 
-            int[] points = detector.work(img);
-            int xEye1 = points[0];
-            int yEye1 = points[1];
-            int widthEye1 = points[2];
-            int xPoint1 = points[3];
-            int yPoint1 = points[4];
-            int widthPoint1 = points[5];
-            int xEye2 = points[6];
-            int yEye2 = points[7];
-            int widthEye2 = points[8];
-            int xPoint2 = points[9];
-            int yPoint2 = points[10];
-            int widthPoint2 = points[11];
-            int xFace = points[12];
-            int yFace = points[13];
-            int heightPoint1 = points[14];
-            int heightPoint2 = points[15];
+            points = detector.work(img);
+            xEye1 = points[0];
+            yEye1 = points[1];
+            widthEye1 = points[2];
+            xPoint1 = points[3];
+            yPoint1 = points[4];
+            widthPoint1 = points[5];
+            xEye2 = points[6];
+            yEye2 = points[7];
+            widthEye2 = points[8];
+            xPoint2 = points[9];
+            yPoint2 = points[10];
+            widthPoint2 = points[11];
+            xFace = points[12];
+            yFace = points[13];
+            heightPoint1 = points[14];
+            heightPoint2 = points[15];
 
             if (xEye1 < xEye2) {
                 xLeftEye = xEye1;
@@ -78,8 +98,8 @@ public class Main {
                 widthLeftPoint = widthPoint2;
             }
 
-            int xMain = xFace + xLeftEye + xLeftPoint + widthLeftPoint / 2;
-            int yMain = yFace + yLeftEye + yLeftPoint + heightLeftPoint / 2;
+            xMain = xFace + xLeftEye + xLeftPoint + widthLeftPoint / 2;
+            yMain = yFace + yLeftEye + yLeftPoint + heightLeftPoint / 2;
             Imgproc.line(img, new Point(0, yMain), new Point(640, yMain), new Scalar(255, 255, 255, 255), 2);
             Imgproc.line(img, new Point((double) img.width() / 2, 0), new Point((double) img.width() / 2, 600), new Scalar(255, 255, 255, 255), 1);
             Imgproc.line(img, new Point(0, (double)img.height() / 2), new Point(640, (double) img.height() / 2), new Scalar(255, 255, 255, 255), 1);
@@ -102,32 +122,49 @@ public class Main {
                             yMyPoint -= 1;
                         }
                     }
-                    System.out.println(xMyPoint);
+                    if (e.getKeyChar() == 's' && start) {
+                        start = true;
+                    }
+                    if (e.getKeyChar() == 'e') {
+                        System.exit(0);
+                    }
                 }
             });
 
             Core.flip(img, img, 1);
 
-            // лево
             if (xMain - (xFace + xLeftEye + xMyPoint) > 0) {
-                if (yMain - (yFace + yLeftEye + yMyPoint) > -4) {
-                    //window.setState(3);
-                    drawLeftBottom(img);
+                if (yMain - (yFace + yLeftEye + yMyPoint) > -2) {
+                    if (start) {
+                        window.setState(3);
+                    } else {
+                        drawLeftBottom(img);
+                    }
                 } else {
-                    //window.setState(1);
-                    drawLeftTop(img);
+                    if (start) {
+                        window.setState(1);
+                    } else {
+                        drawLeftTop(img);
+                    }
                 }
             } else {
-                if (yMain - (yFace + yLeftEye + yMyPoint) > -4) {
-                    //window.setState(4);
-                    drawRightBottom(img);
+                if (yMain - (yFace + yLeftEye + yMyPoint) > -2) {
+                    if (start) {
+                        window.setState(4);
+                    } else {
+                        drawRightBottom(img);
+                    }
                 } else {
-                    //window.setState(2);
-                    drawRightTop(img);
+                    if (start) {
+                        window.setState(2);
+                    } else {
+                        drawRightTop(img);
+                    }
                 }
             }
-
-           window.show(img);
+            if (!start) {
+                window.show(img);
+            }
         }
     }
 
