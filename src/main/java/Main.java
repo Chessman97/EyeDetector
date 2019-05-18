@@ -79,9 +79,11 @@ public class Main {
             int xMain = xFace + xLeftEye + xLeftPoint + widthLeftPoint / 2;
             int yMain = yFace + yLeftEye + yLeftPoint + heightLeftPoint / 2;
             Imgproc.line(img, new Point(0, yMain), new Point(640, yMain), new Scalar(255, 255, 255, 255), 2);
-            Imgproc.line(img, new Point((double) img.width() / 2, 0), new Point((double) img.width() / 2, 600), new Scalar(255, 255, 255, 255), 2);
+            Imgproc.line(img, new Point((double) img.width() / 2, 0), new Point((double) img.width() / 2, 600), new Scalar(255, 255, 255, 255), 1);
+            Imgproc.line(img, new Point(0, (double)img.height() / 2), new Point(640, (double) img.height() / 2), new Scalar(255, 255, 255, 255), 1);
             Imgproc.line(img, new Point(xMain, 0), new Point(xMain, 600), new Scalar(255, 255, 255, 255), 2);
             Imgproc.line(img, new Point(xFace + xLeftEye + xMyPoint, 0), new Point(xFace + xLeftEye + xMyPoint, 600), new Scalar(1, 1, 1, 255), 2);
+            Imgproc.line(img, new Point(0, yFace + yLeftEye + yMyPoint), new Point(640, yFace + yLeftEye + yMyPoint), new Scalar(1, 1, 1, 255), 2);
 
             window.addKeyListener(new KeyAdapter() {
                 @Override
@@ -92,6 +94,11 @@ public class Main {
                         } else if (xMain < xFace + xLeftEye + xMyPoint) {
                             xMyPoint -= 1;
                         }
+                        if (yMain > yFace + yLeftEye + yMyPoint) {
+                            yMyPoint += 1;
+                        } else if (yMain < yFace + yLeftEye + yMyPoint) {
+                            yMyPoint -= 1;
+                        }
                     }
                     System.out.println(xMyPoint);
                 }
@@ -99,45 +106,51 @@ public class Main {
 
             Core.flip(img, img, 1);
 
+            // лево
             if (xMain - (xFace + xLeftEye + xMyPoint) > 0) {
-                if (swap < 0) {
-                    drawRight(img);
-                    swap = 0;
+                if (yMain - (yFace + yLeftEye + yMyPoint) > -4) {
+                    drawLeftBottom(img);
                 } else {
-                    drawLeft(img);
-                    dopSwap++;
-                    if (dopSwap > 15) {
-                        swap = 1;
-                    }
+                    drawLeftTop(img);
                 }
-            } else if ((xFace + xLeftEye + xMyPoint) - xMain > 0) {
-                if (swap > 0) {
-                    drawLeft(img);
-                    swap = 0;
+            } else {
+                if (yMain - (yFace + yLeftEye + yMyPoint) > -4) {
+                    drawRightBottom(img);
                 } else {
-                    drawRight(img);
-                    dopSwap--;
-                    if (dopSwap < -15) {
-                        swap = -1;
-                    }
+                    drawRightTop(img);
                 }
             }
 
             window.show(img);
-
         }
     }
 
-    private static void drawLeft(Mat img) {
-        for (int i = 0; i < img.rows(); i++) {
+    private static void drawLeftTop(Mat img) {
+        for (int i = 0; i < img.rows() / 2; i++) {
             for (int j = 0; j < img.cols() / 2; j++) {
                 img.put(i, j, img.get(i, j)[0] - 80);
             }
         }
     }
 
-    private static void drawRight(Mat img) {
-        for (int i = 0; i < img.rows(); i++) {
+    private static void drawLeftBottom(Mat img) {
+        for (int i = img.rows() / 2; i < img.rows(); i++) {
+            for (int j = 0; j < img.cols() / 2; j++) {
+                img.put(i, j, img.get(i, j)[0] - 80);
+            }
+        }
+    }
+
+    private static void drawRightTop(Mat img) {
+        for (int i = 0; i < img.rows() / 2; i++) {
+            for (int j = img.cols() / 2; j < img.cols(); j++) {
+                img.put(i, j, img.get(i, j)[0] - 80);
+            }
+        }
+    }
+
+    private static void drawRightBottom(Mat img) {
+        for (int i = img.rows() / 2; i < img.rows(); i++) {
             for (int j = img.cols() / 2; j < img.cols(); j++) {
                 img.put(i, j, img.get(i, j)[0] - 80);
             }
