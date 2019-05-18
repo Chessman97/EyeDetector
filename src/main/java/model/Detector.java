@@ -123,7 +123,7 @@ public class Detector {
                     }
                 }
             }
-            Imgproc.rectangle(img, new Point(r.x, r.y), new Point(r.x + r.width, r.y + r.height), new Scalar(1, 1, 1, 1), 2);
+//            Imgproc.rectangle(img, new Point(r.x, r.y), new Point(r.x + r.width, r.y + r.height), new Scalar(1, 1, 1, 1), 2);
 //            Imgproc.line(img, new Point(r.x, r.y), new Point(r.x + r.width, r.y + r.height), new Scalar(1, 1, 1, 1), 2);
 //            Imgproc.line(img, new Point(r.x + r.width, r.y), new Point(r.x, r.y + r.height), new Scalar(1, 1, 1, 1), 2);
         }
