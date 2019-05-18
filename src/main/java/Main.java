@@ -81,6 +81,8 @@ public class Main {
                 }
             });
 
+            Core.flip(img, img, 1);
+
             if (xMain > xFace + xLeftEye + xMyPoint) {
                 if (swap < 0) {
                     drawRight(img);
