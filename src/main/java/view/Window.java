@@ -1,5 +1,6 @@
 package view;
 
+import main.Main;
 import org.opencv.core.Mat;
 
 import javax.swing.*;
@@ -14,6 +15,7 @@ public class Window extends JFrame {
     private int eggNumber = 1;
     private boolean win = false;
     private boolean lose = false;
+    private static Mat imgPlayer = new Mat();
 
     private ImageIcon imageIconWolf1 = new ImageIcon("C:\\Users\\Mikhail\\IdeaProjects\\EggsCatcherPath2\\src\\main\\resources\\img\\wolf1.png");
     private ImageIcon imageIconWolf2 = new ImageIcon("C:\\Users\\Mikhail\\IdeaProjects\\EggsCatcherPath2\\src\\main\\resources\\img\\wolf2.png");
@@ -131,15 +133,17 @@ public class Window extends JFrame {
         }
 
         if (win) {
-            getGraphics().drawImage(winIcon.getImage(), 440, 180, null);
+            getGraphics().drawImage(new ImageIcon(SwingUtils.MatToBufferedImage(imgPlayer)).getImage(), 440, 100, null);
             g2.setFont(new Font("Purisa", Font.BOLD, 36));
-            g2.drawString("Вы победили!", 440, 520);
+            g2.drawString("Вы победили!", 440, 600);
         }
 
         if (lose) {
-            getGraphics().drawImage(loseIcon.getImage(), 440, 180, null);
+//            getGraphics().drawImage(loseIcon.getImage(), 440, 180, null);
+            getGraphics().drawImage(new ImageIcon(SwingUtils.MatToBufferedImage(imgPlayer)).getImage(), 440, 100, null);
             g2.setFont(new Font("Purisa", Font.BOLD, 36));
-            g2.drawString("Вы проиграли!", 440, 590);
+            g2.drawString("Вы проиграли!", 440, 600);
+
         }
     }
 
@@ -147,10 +151,12 @@ public class Window extends JFrame {
         if (eggsCount == 5) {
             win = true;
             game = false;
+            imgPlayer = Main.img.clone();
         }
         if (eggsBrakeCount == 3) {
             lose = true;
             game = false;
+            imgPlayer = Main.img.clone();
         }
         eggNumber = Math.abs(new Random().nextInt()) % 4 + 1;
         if (eggNumber == 1) {

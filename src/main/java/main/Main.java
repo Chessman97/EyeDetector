@@ -1,3 +1,5 @@
+package main;
+
 import input.Camera;
 import model.Detector;
 import org.opencv.core.Core;
@@ -14,10 +16,14 @@ import java.util.Scanner;
 
 public class Main {
 
+    static {
+        System.loadLibrary(Core.NATIVE_LIBRARY_NAME);
+    }
     private static boolean tab = false;
     private static double procent = 0;
     private static double procent2 = 0;
     private static boolean start = false;
+    public static Mat img = new Mat();
 
     private static int xMain;
     private static int yMain;
@@ -41,14 +47,12 @@ public class Main {
     private static int yMyPoint = 0;
     private static boolean keyboardState;
 
-    static {
-        System.loadLibrary(Core.NATIVE_LIBRARY_NAME);
-    }
+
 
     public static void main(String[] args) {
         loadMyPoint();
 
-        Mat img = new Mat();
+       // Mat img = new Mat();
         int[] points;
         int xEye1;
         int yEye1;
