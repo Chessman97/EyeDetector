@@ -135,38 +135,33 @@ public class Main {
                     procent = (double) xMyPoint / widthLeftEye;
                     procent2 = (double) yMyPoint / heightLeftEye;
 
-                    tab = false;
                     if (e.getKeyChar() == 'r' && !tab) {
                         keyboardState = false;
                         tab = true;
-                    }
-                    if (e.getKeyChar() == 's' && !tab) {
+                    } else if (e.getKeyChar() == 's' && !tab) {
                         start = !start;
                         tab = true;
-                    }
-                    if (e.getKeyChar() == 'e' && !tab) {
+                    } else if (e.getKeyChar() == 'e' && !tab) {
                         saveMyPoint();
                         System.exit(0);
-                    }
-                    if (e.getKeyChar() == '1' && !tab) {
+                    } else if (e.getKeyChar() == '1' && !tab) {
                         window.setState(1);
                         keyboardState = true;
                         tab = true;
-                    }
-                    if (e.getKeyChar() == '2' && !tab) {
+                    } else if (e.getKeyChar() == '2' && !tab) {
                         window.setState(2);
                         keyboardState = true;
                         tab = true;
-                    }
-                    if (e.getKeyChar() == '3' && !tab) {
+                    } else if (e.getKeyChar() == '3' && !tab) {
                         window.setState(3);
                         keyboardState = true;
                         tab = true;
-                    }
-                    if (e.getKeyChar() == '4' && !tab) {
+                    } else if (e.getKeyChar() == '4' && !tab) {
                         window.setState(4);
                         keyboardState = true;
                         tab = true;
+                    } else {
+                        tab = false;
                     }
                     if (start) {
                         window.repaint();
