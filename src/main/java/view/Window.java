@@ -111,7 +111,6 @@ public class Window extends JFrame {
                 newEgg();
             }
 
-            System.out.println(state + " " + eggNumber);
             if (state == eggNumber) {
                 if (eggNumber == 1 || eggNumber == 2) {
                     if (320 > yEgg && yEgg > 270) {
