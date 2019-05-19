@@ -14,6 +14,7 @@ import java.util.Scanner;
 
 public class Main {
 
+    private static boolean tab = false;
     private static double procent = 0;
     private static double procent2 = 0;
     private static boolean start = false;
@@ -45,15 +46,7 @@ public class Main {
     }
 
     public static void main(String[] args) {
-        try {
-            BufferedReader bufferedReader = new BufferedReader(new FileReader("C:\\Users\\Mikhail\\IdeaProjects\\EggsCatcherPath2\\src\\main\\resources\\xy.txt"));
-            String s =bufferedReader.readLine();
-            Scanner sc = new Scanner(s);
-            xMyPoint = sc.nextInt();
-            yMyPoint = sc.nextInt();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        loadMyPoint();
 
         Mat img = new Mat();
         int[] points;
@@ -141,41 +134,43 @@ public class Main {
                     }
                     procent = (double) xMyPoint / widthLeftEye;
                     procent2 = (double) yMyPoint / heightLeftEye;
-                    if (e.getKeyChar() == 'r') {
+
+                    tab = false;
+                    if (e.getKeyChar() == 'r' && !tab) {
                         keyboardState = false;
+                        tab = true;
                     }
-                    if (e.getKeyChar() == 's') {
+                    if (e.getKeyChar() == 's' && !tab) {
                         start = !start;
+                        tab = true;
                     }
-                    if (e.getKeyChar() == 'e') {
-                        try {
-                            BufferedWriter bufferedWriter = new BufferedWriter(new FileWriter("C:\\Users\\Mikhail\\IdeaProjects\\EggsCatcherPath2\\src\\main\\resources\\xy.txt"));
-                            bufferedWriter.write(xMyPoint + " " + yMyPoint + "\n");
-                            bufferedWriter.close();
-                        } catch (IOException e1) {
-                            e1.printStackTrace();
-                        }
+                    if (e.getKeyChar() == 'e' && !tab) {
+                        saveMyPoint();
                         System.exit(0);
                     }
-
-                    if (e.getKeyChar() == '1') {
+                    if (e.getKeyChar() == '1' && !tab) {
                         window.setState(1);
                         keyboardState = true;
+                        tab = true;
                     }
-                    if (e.getKeyChar() == '2') {
+                    if (e.getKeyChar() == '2' && !tab) {
                         window.setState(2);
                         keyboardState = true;
+                        tab = true;
                     }
-                    if (e.getKeyChar() == '3') {
+                    if (e.getKeyChar() == '3' && !tab) {
                         window.setState(3);
                         keyboardState = true;
+                        tab = true;
                     }
-                    if (e.getKeyChar() == '4') {
+                    if (e.getKeyChar() == '4' && !tab) {
                         window.setState(4);
                         keyboardState = true;
+                        tab = true;
                     }
-                    if (start)
+                    if (start) {
                         window.repaint();
+                    }
                 }
             });
 
@@ -217,6 +212,28 @@ public class Main {
             } else {
                 window.show(img);
             }
+        }
+    }
+
+    private static void loadMyPoint() {
+        try {
+            BufferedReader bufferedReader = new BufferedReader(new FileReader("C:\\Users\\Mikhail\\IdeaProjects\\EggsCatcherPath2\\src\\main\\resources\\xy.txt"));
+            String s =bufferedReader.readLine();
+            Scanner sc = new Scanner(s);
+            xMyPoint = sc.nextInt();
+            yMyPoint = sc.nextInt();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private static void saveMyPoint() {
+        try {
+            BufferedWriter bufferedWriter = new BufferedWriter(new FileWriter("C:\\Users\\Mikhail\\IdeaProjects\\EggsCatcherPath2\\src\\main\\resources\\xy.txt"));
+            bufferedWriter.write(xMyPoint + " " + yMyPoint + "\n");
+            bufferedWriter.close();
+        } catch (IOException e1) {
+            e1.printStackTrace();
         }
     }
 
